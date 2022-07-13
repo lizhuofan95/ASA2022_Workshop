@@ -58,7 +58,15 @@ data.loc[data['section'].str.contains("education|childhood|college|undergraduate
 
 data.to_excel("oralhistory_coded.xlsx")
 
+
 data = pd.read_excel("oralhistory_coded.xlsx", index_col = 0)
 
 data.loc[data['Codes']==np.nan, 'Codes'] = ''
 
+grouped = data.groupby("Document")
+
+grouped['Codes'].any()
+
+data = grouped.filter(lambda x: x['Codes'].count() > 15)
+
+data.to_excel("oralhistory_coded_short.xlsx")
