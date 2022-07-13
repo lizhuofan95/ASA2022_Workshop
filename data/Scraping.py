@@ -54,10 +54,15 @@ data = original.dropna()
 
 data['code'] = ''
 
-data.loc[data['section'].str.contains("education|childhood|college|undergraduate|graduate", case=False), 'code'] = "Background"
+data.loc[data['section'].str.contains("childhood|background", case=False), 'code'] = "Background"
 
-data.to_excel("oralhistory_coded.xlsx")
+grouped = data.groupby("person")
 
+grouped['code'].any()
+
+data = grouped.filter(lambda x: x['code'].any())
+
+data = data.groupby(['person']).head(n=80)
 
 data = pd.read_excel("oralhistory_coded.xlsx", index_col = 0)
 
